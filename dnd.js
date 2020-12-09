@@ -77,7 +77,7 @@ const drop_setting = (ns, v) => el => {
 		ondrop: `drop(event, '${ns}', '${v}')`
 	});
 };
-const dnd_setup = (ns = 'dd') => {
+async function dnd_setup(ns = 'dd') {
 	const drag_cls = `.${ns}-drag`;
 	const drop_cls = `.${ns}-drop`;
 	drags.forEach(dg => dropEffects.reduce(setFn, dg[ns] = {}));
