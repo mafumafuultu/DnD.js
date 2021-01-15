@@ -4,20 +4,31 @@ DnD.js provides the event-handling part of drag and drop, not the actual impleme
 ## quick start
 
 ```html
-<script src="dnd.js"></script>
-```
-
-```js
-document.onload = () => {
-	const namespace = 'dd';
-	const allowed = 'move';
-	dnd_setup(namespace);
-	Drop[namespace][allowed].set((e, ns) => {
-		DnD.uniqueEL(e, ns).then(el => {
-			e.currentTarget.append(el);
+<script type="module">
+	import DnD from "./node_modules/dnd/dnd.js";
+	document.onload = () => {
+		const namespace = 'dd';
+		const allowed = 'move';
+		DnD.dnd_setup(namespace).then(() => {
+			DnD.Drop[namespace][allowed].set((e, ns) => {
+				DnD.shiftDrop(e);
+				DnD.uniqueEL(e, ns).then(el => {
+					switch(e.dataTransfer.effectAllowed) {
+						case 'move':
+							e.target.append(el);
+							break;
+						case 'copy':
+						default:
+							const clone = el.cloneNode();
+							clone.innerHTML = el.innerHTML;
+							e.target.append(clone);
+							DnD.reNumber(ns);
+					}
+				});
+			});
 		});
-	});
-};
+	};
+</script>
 ```
 
 ### set drag target & drop zone
@@ -33,37 +44,37 @@ document.onload = () => {
 
 ### functions
 
-#### `dnd_setup(ns = 'dd')`
+#### `DnD.dnd_setup(ns = 'dd')`
 async function.
 set event-handling
 
 ```js
-dnd_setup();
+DnD.dnd_setup();
 
 // OR
 
 const namespaces = ['dd', 'xx', 'yy', 'zz'];
-Promise.all(namespaces.map(dnd_setup)).then(() => {
+Promise.all(namespaces.map(DnD.dnd_setup)).then(() => {
 	// complete all set up.
 });
 ```
 
-#### `(Dragstart|Drag|Dragend)[namespace][effectAllowed].set(event, namespace)`
+#### `DnD.(Dragstart|Drag|Dragend)[namespace][effectAllowed].set(event, namespace)`
 
 ```js
 // effectAllowed
 // ['', 'none', 'copy', 'move', 'link', 'copyMove', 'copyLink', 'linkMove', 'all'];
-Dragstart.dd.move.set((e, ns) => {
+DnD.Dragstart.dd.move.set((e, ns) => {
 	console.log('drag target unique id', e.dataTransfer.getData(DnD.unique));
 	e.dataTransfer.setData('test', 'a');
 })
 ```
 
-#### `(Dragenter|Dragover|Dragleave|Drop)[namespace][dropEffects].set(event, namespace)`
+#### `DnD.(Dragenter|Dragover|Dragleave|Drop)[namespace][dropEffects].set(event, namespace)`
 ```js
 // dropEffects
 // ['', 'move', 'copy', 'link', 'none']
-Drop.dd.move.set((e, ns) => {
+DnD.Drop.dd.move.set((e, ns) => {
 	console.log('drag target unique id', e.dataTransfer.getData(DnD.unique));
 	console.log(e.dataTransfer.getData('test'));
 
@@ -80,7 +91,7 @@ DnD.uniqueEL(e, ns).then(el => {})
 
 
 
-#### reNumber(namespace)
+#### DnD.reNumber(namespace)
 update unique number.
 
 ```html
@@ -92,14 +103,14 @@ update unique number.
 ```
 
 ```js
-Drop.dd.copy.set((e, ns) => {
+DnD.Drop.dd.copy.set((e, ns) => {
 	DnD.uniqueEL(e, ns).then(el => {
 		const clone = el.cloneNode();
 		clone.innerHTML = el.innerHTML;
-		e.currentTarget.append(clone);
+		e.ctarget.append(clone);
 
 		// unique number update
-		reNumber(ns);
+		DnD.reNumber(ns);
 	});
 });
 ```
