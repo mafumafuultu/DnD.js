@@ -118,3 +118,4 @@ const DnD = {
 	},
 	shiftDrop: e => e.dataTransfer.effectAllowed = e.ctrlKey ? 'copy' : e.shiftKey ? 'move' : e.dataTransfer.effectAllowed,
 };
+export default DnD;

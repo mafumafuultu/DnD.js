@@ -1,34 +1,49 @@
 # DnD.js
+
+![](https://img.shields.io/static/v1?label=LICENSE&message=MIT&color=informational)
+![](https://img.shields.io/static/v1?label=TYPE&message=module&color=blue)
+
+
 DnD.js provides the event-handling part of drag and drop, not the actual implementation of copying and moving.
 
 ## quick start
 
+### load
+#### no-module
+
+```html
+<script src="./node_modules/dndesm/dnd.js"></script>
+```
+
+#### module
+
 ```html
 <script type="module">
-	import DnD from "./node_modules/dnd/dnd.js";
-	document.onload = () => {
-		const namespace = 'dd';
-		const allowed = 'move';
-		DnD.dnd_setup(namespace).then(() => {
-			DnD.Drop[namespace][allowed].set((e, ns) => {
-				DnD.shiftDrop(e);
-				DnD.uniqueEL(e, ns).then(el => {
-					switch(e.dataTransfer.effectAllowed) {
-						case 'move':
-							e.target.append(el);
-							break;
-						case 'copy':
-						default:
-							const clone = el.cloneNode();
-							clone.innerHTML = el.innerHTML;
-							e.target.append(clone);
-							DnD.reNumber(ns);
-					}
-				});
-			});
-		});
-	};
+	import DnD from "./node_modules/dndesm/index.mjs";
 </script>
+```
+
+```js
+const namespace = 'dd';
+const allowed = 'move';
+DnD.setup(namespace).then(() => {
+	DnD.Drop[namespace][allowed].set((e, ns) => {
+		DnD.shiftDrop(e);
+		DnD.uniqueEL(e, ns).then(el => {
+			switch(e.dataTransfer.effectAllowed) {
+				case 'move':
+					e.target.append(el);
+					break;
+				case 'copy':
+				default:
+					const clone = el.cloneNode();
+					clone.innerHTML = el.innerHTML;
+					e.target.append(clone);
+					DnD.reNumber(ns);
+			}
+		});
+	});
+});
 ```
 
 ### set drag target & drop zone
@@ -44,12 +59,12 @@ DnD.js provides the event-handling part of drag and drop, not the actual impleme
 
 ### functions
 
-#### `DnD.dnd_setup(ns = 'dd')`
+#### `DnD.setup(ns = 'dd')`
 async function.
 set event-handling
 
 ```js
-DnD.dnd_setup();
+DnD.setup();
 
 // OR
 
@@ -89,9 +104,11 @@ get drag target element.
 DnD.uniqueEL(e, ns).then(el => {})
 ```
 
+#### `DnD.shiftDrop(event)`
+move: <kbd>Shift</kbd> + Drop  
+copy: <kbd>Ctrl</kbd> + Drop
 
-
-#### DnD.reNumber(namespace)
+#### `DnD.reNumber(namespace)`
 update unique number.
 
 ```html
