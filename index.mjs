@@ -76,9 +76,9 @@ const DnD = {
 					default:
 				}
 			}))
-			: Promise.resolve(ns)).then(this.dnd_setup);
+			: Promise.resolve(ns)).then(this._dnd_setup);
 	},
-	dnd_setup(ns = 'dd') {
+	_dnd_setup(ns = 'dd') {
 		DnD.drags = [DnD.Dragstart, DnD.Drag, DnD.Dragend];
 		DnD.drops = [DnD.Dragenter, DnD.Dragover, DnD.Dragleave, DnD.Drop];
 

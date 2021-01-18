@@ -69,7 +69,7 @@ DnD.setup();
 // OR
 
 const namespaces = ['dd', 'xx', 'yy', 'zz'];
-Promise.all(namespaces.map(DnD.dnd_setup)).then(() => {
+Promise.all(namespaces.map(DnD.setup)).then(() => {
 	// complete all set up.
 });
 ```
