@@ -1,0 +1,27 @@
+{
+  "name": "dndesm",
+  "version": "0.0.4",
+  "description": "classbase drag and drop esmodule",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mafumafuultu/DnD.js.git"
+  },
+  "keywords": [
+    "dnd",
+    "drag and drop",
+    "drag",
+    "drop",
+    "esmodule"
+  ],
+  "author": "mafumafuultu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafumafuultu/DnD.js/issues"
+  },
+  "homepage": "https://github.com/mafumafuultu/DnD.js#readme",
+  "devDependencies": {},
+  "dependencies": {}
+}
